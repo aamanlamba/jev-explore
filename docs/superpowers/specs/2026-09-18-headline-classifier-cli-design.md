@@ -49,7 +49,7 @@ per TypeSafe's guidance).
 
 ## CLI interface
 
-```
+```bash
 python headline_cli.py
 python headline_cli.py --input my_headlines.txt
 python headline_cli.py --input my_headlines.txt --output results.json --format json
