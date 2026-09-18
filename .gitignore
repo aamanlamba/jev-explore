@@ -29,7 +29,7 @@ htmlcov/
 dmypy.json
 .pyre/
 .ruff_cache/
-
+.env
 # Jupyter
 .ipynb_checkpoints/
 
