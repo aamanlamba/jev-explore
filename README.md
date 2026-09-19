@@ -1,6 +1,10 @@
 # Jev Explore
 
-A small Python notebook project for exploring the TypeSafe SDK and using it to analyze support-style customer messages.
+A small Python notebook project for exploring the TypeSafe SDK and using it to analyze support-style customer messages. This is designed to demonstrate the usage of Jev, TypeSafe's first System One classifier model.
+
+System One models are a class of AI models built to make fast, structured decisions that software can use directly. A System One model evaluates a state and returns typed answers and probabilities.
+
+Like an LLM, a System One model understands natural-language input. It returns typed decisions and probabilities rather than generated text.
 
 ## Overview
 
