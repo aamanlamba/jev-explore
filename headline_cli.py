@@ -58,6 +58,15 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 1
 
+    if args.output:
+        output_parent = Path(args.output).parent
+        if not output_parent.is_dir():
+            print(
+                f"Error: output directory does not exist: {output_parent}",
+                file=sys.stderr,
+            )
+            return 1
+
     headlines = load_headlines(args.input)
 
     client = TypeSafeClient()
@@ -71,6 +80,11 @@ def main(argv: list[str] | None = None) -> int:
         else:
             write_csv(results, args.output)
         print(f"\nWrote {len(results)} results to {args.output} ({args.format})")
+
+    failed = sum(1 for result in results if result.error is not None)
+    if failed > 0:
+        print(f"{failed} of {len(results)} headlines failed", file=sys.stderr)
+        return 1
 
     return 0
 

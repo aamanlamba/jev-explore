@@ -82,6 +82,9 @@ python headline_cli.py --input my_headlines.txt --output results.csv --format cs
 JSON output includes full per-category probabilities and distributions;
 CSV output is a flattened, spreadsheet-friendly version.
 
+The sensationalism score ranges from 0 (straightforward and factual) to 2
+(highly sensational, clickbait framing).
+
 ## Dependencies
 
 The project currently uses:

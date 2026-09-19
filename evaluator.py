@@ -25,9 +25,11 @@ class HeadlineResult:
     categories: dict[str, float] = field(default_factory=dict)
     sentiment: str = ""
     sentiment_probabilities: dict[str, float] = field(default_factory=dict)
+    sentiment_confidence: float = 0.0
     sensationalism_score: float = 0.0
     breaking_probability: float = 0.0
     error: str | None = None
+    error_type: str | None = None
 
     def matched_categories(self, threshold: float = MATCH_THRESHOLD) -> list[str]:
         return [name for name, prob in self.categories.items() if prob > threshold]
@@ -71,6 +73,7 @@ def evaluate_headline(client: TypeSafeClient, headline: str) -> HeadlineResult:
         response = client.system_one(state=headline, questions=build_questions())
     except TypeSafeError as exc:
         result.error = str(exc)
+        result.error_type = type(exc).__name__
         return result
 
     for name in CATEGORIES:
@@ -80,6 +83,7 @@ def evaluate_headline(client: TypeSafeClient, headline: str) -> HeadlineResult:
     sentiment_answer = response.answers["sentiment"]
     result.sentiment = sentiment_answer.choice
     result.sentiment_probabilities = dict(sentiment_answer.probabilities)
+    result.sentiment_confidence = sentiment_answer.confidence
 
     result.sensationalism_score = response.answers["sensationalism"].score
     result.breaking_probability = response.answers["breaking"].noul
