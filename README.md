@@ -58,6 +58,30 @@ print(response.answers["frustration"].score)
 print(response.answers["is_urgent"].noul)
 ```
 
+## Running the Headline Classifier CLI
+
+In addition to the notebook, this project includes `headline_cli.py`, a
+command-line tool that scores a list of news headlines across multiple
+dimensions using TypeSafe: topic category (multi-label, one of Politics,
+Business, Technology, Sports, Entertainment, Health, Science, World),
+sentiment, sensationalism, and whether the headline reads as breaking news.
+
+```bash
+# Evaluate the bundled sample headlines, print a console table
+python headline_cli.py
+
+# Evaluate your own headlines (one per line)
+python headline_cli.py --input my_headlines.txt
+
+# Also write full results to a file
+python headline_cli.py --input my_headlines.txt --output results.json --format json
+python headline_cli.py --input my_headlines.txt --output results.csv --format csv
+```
+
+`--format` defaults to `json` and only matters when `--output` is given.
+JSON output includes full per-category probabilities and distributions;
+CSV output is a flattened, spreadsheet-friendly version.
+
 ## Dependencies
 
 The project currently uses:
