@@ -68,7 +68,7 @@ def main(argv: list[str] | None = None) -> int:
             return 1
 
     headlines = load_headlines(args.input)
-
+    print(headlines[1])
     client = TypeSafeClient()
     results = evaluate_headlines(client, headlines)
 
