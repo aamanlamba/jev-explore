@@ -1,3 +1,4 @@
-ipykernel 
+ipykernel
 python-dotenv
 typesafe-sdk
+streamlit

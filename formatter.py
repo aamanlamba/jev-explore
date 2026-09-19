@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+import io
 import json
 from pathlib import Path
 
@@ -49,29 +50,38 @@ def _result_to_dict(result: HeadlineResult) -> dict:
     }
 
 
-def write_json(results: list[HeadlineResult], path: str) -> None:
+def results_to_json(results: list[HeadlineResult]) -> str:
     data = [_result_to_dict(result) for result in results]
-    Path(path).write_text(json.dumps(data, indent=2))
+    return json.dumps(data, indent=2)
 
 
-def write_csv(results: list[HeadlineResult], path: str) -> None:
+def results_to_csv(results: list[HeadlineResult]) -> str:
     fieldnames = (
         ["headline"]
         + [f"category_{name.lower()}" for name in CATEGORIES]
         + ["sentiment", "sensationalism_score", "breaking_probability", "error", "error_type"]
     )
-    with open(path, "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        for result in results:
-            row = {
-                "headline": result.headline,
-                "error": result.error or "",
-                "error_type": result.error_type or "",
-            }
-            for name in CATEGORIES:
-                row[f"category_{name.lower()}"] = result.categories.get(name, "")
-            row["sentiment"] = result.sentiment
-            row["sensationalism_score"] = "" if result.error else result.sensationalism_score
-            row["breaking_probability"] = "" if result.error else result.breaking_probability
-            writer.writerow(row)
+    buffer = io.StringIO()
+    writer = csv.DictWriter(buffer, fieldnames=fieldnames)
+    writer.writeheader()
+    for result in results:
+        row = {
+            "headline": result.headline,
+            "error": result.error or "",
+            "error_type": result.error_type or "",
+        }
+        for name in CATEGORIES:
+            row[f"category_{name.lower()}"] = result.categories.get(name, "")
+        row["sentiment"] = result.sentiment
+        row["sensationalism_score"] = "" if result.error else result.sensationalism_score
+        row["breaking_probability"] = "" if result.error else result.breaking_probability
+        writer.writerow(row)
+    return buffer.getvalue()
+
+
+def write_json(results: list[HeadlineResult], path: str) -> None:
+    Path(path).write_text(results_to_json(results))
+
+
+def write_csv(results: list[HeadlineResult], path: str) -> None:
+    Path(path).write_text(results_to_csv(results), newline="")

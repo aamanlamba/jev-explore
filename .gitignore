@@ -36,6 +36,6 @@ dmypy.json
 # IDEs and local tooling
 .idea/
 .vscode/
-
+.claude
 # Added by ggshield
 .cache_ggshield
